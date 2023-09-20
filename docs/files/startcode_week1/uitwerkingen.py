@@ -19,9 +19,17 @@ def draw_graph(data):
     # roteren (waarom?).
     # Maak gebruik van pytplot.scatter om dit voor elkaar te krijgen.
 
-    plt.scatter(data[:, 0], data[:, 1])
+    x = data[:, 0]
+    y = data[:, 1]
+
+    plt.scatter(x, y)
+    plt.xlabel('Population of City in 10,000s')
+    plt.ylabel('Profit in $10,000s')
     plt.show()
 
+    print("De data-matrix moet eerst geroteerd worden omdat de eerste kolom de x-waarden bevat en de tweede kolom de y-waarden.")
+    print("De scatter-plot verwacht echter een lijst met x-waarden en een lijst met y-waarden.")
+    print("Door de matrix te roteren, worden de kolommen omgezet in rijen en kunnen de waarden direct worden gebruikt.")
 
 
 def compute_cost(X, y, theta):
@@ -44,6 +52,8 @@ def compute_cost(X, y, theta):
     #    4. kwadrateer dit verschil
     #    5. tal al deze kwadraten bij elkaar op en deel dit door twee keer het aantal datapunten
 
+    print("X heeft de dimensies: ", X.shape)
+
     J = 0
 
     # YOUR CODE HERE
@@ -56,8 +66,7 @@ def compute_cost(X, y, theta):
 
     J = sum(quadratic_error) / (m * 2)
 
-    return J[0]
-
+    return J
 
 
 def gradient_descent(X, y, theta, alpha, num_iters):
@@ -84,7 +93,7 @@ def gradient_descent(X, y, theta, alpha, num_iters):
     # YOUR CODE HERE
     theta = theta.T
     for i in range(1, num_iters):
-        prediction = np.dot(X, theta)
+        prediction = np.dot(X, theta) # Dit zor
 
         error = prediction - y
 
@@ -98,6 +107,8 @@ def gradient_descent(X, y, theta, alpha, num_iters):
     # aan het eind van deze loop retourneren we de nieuwe waarde van theta
     # (wat is de dimensionaliteit van theta op dit moment?).
 
+    print("theta heeft nu de dimensies: ", theta.shape)
+
     return theta.T, costs
 
 
@@ -107,6 +118,7 @@ def draw_costs(data):
     plt.plot(data)
     plt.ylim(4, 7)
     plt.show()
+
 
 def contour_plot(X, y):
     #OPGAVE 4
@@ -132,7 +144,7 @@ def contour_plot(X, y):
     for i in range(len(t1)):
         for j in range(len(t2)):
             theta = np.array([t1[i], t2[j]])
-            J_vals[i, j] = compute_cost(X, y, theta)
+            J_vals[i, j] = compute_cost(X, y, theta)[0]
 
 
     surf = ax.plot_surface(T1, T2, J_vals, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0, antialiased=False)
