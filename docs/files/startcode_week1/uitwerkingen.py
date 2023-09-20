@@ -19,8 +19,8 @@ def draw_graph(data):
     # roteren (waarom?).
     # Maak gebruik van pytplot.scatter om dit voor elkaar te krijgen.
 
-    #YOUR CODE HERE
-    pass
+    plt.scatter(data[:, 0], data[:, 1])
+    plt.show()
 
 
 
@@ -47,8 +47,16 @@ def compute_cost(X, y, theta):
     J = 0
 
     # YOUR CODE HERE
+    m,n = X.shape
 
-    return J
+    prediction = X.dot(theta)
+
+    error = abs(np.subtract(y, prediction))
+    quadratic_error = error**2
+
+    J = sum(quadratic_error) / (m * 2)
+
+    return J[0]
 
 
 
@@ -74,17 +82,31 @@ def gradient_descent(X, y, theta, alpha, num_iters):
     costs = []
 
     # YOUR CODE HERE
+    theta = theta.T
+    for i in range(1, num_iters):
+        prediction = np.dot(X, theta)
+
+        error = prediction - y
+
+        gradient = np.dot(X.T, error)
+
+        theta -= (alpha / m) * gradient
+
+        cost = np.sum(error ** 2) / (2 * m)
+        costs.append(cost)
 
     # aan het eind van deze loop retourneren we de nieuwe waarde van theta
     # (wat is de dimensionaliteit van theta op dit moment?).
 
-    return theta, costs
+    return theta.T, costs
 
 
 def draw_costs(data): 
     # OPGAVE 3b
     # YOUR CODE HERE
-    pass
+    plt.plot(data)
+    plt.ylim(4, 7)
+    plt.show()
 
 def contour_plot(X, y):
     #OPGAVE 4
@@ -106,7 +128,12 @@ def contour_plot(X, y):
 
     J_vals = np.zeros( (len(t2), len(t2)) )
 
-    #YOUR CODE HERE 
+    #YOUR CODE HERE
+    for i in range(len(t1)):
+        for j in range(len(t2)):
+            theta = np.array([t1[i], t2[j]])
+            J_vals[i, j] = compute_cost(X, y, theta)
+
 
     surf = ax.plot_surface(T1, T2, J_vals, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0, antialiased=False)
 
