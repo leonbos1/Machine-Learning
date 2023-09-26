@@ -107,7 +107,7 @@ def gradient_descent(X, y, theta, alpha, num_iters):
     # aan het eind van deze loop retourneren we de nieuwe waarde van theta
     # (wat is de dimensionaliteit van theta op dit moment?).
 
-    print("theta heeft nu de dimensies: ", theta.shape)
+    #(97, 2)
 
     return theta.T, costs
 
