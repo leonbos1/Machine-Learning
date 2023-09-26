@@ -10,7 +10,9 @@ def plot_number(nrVector):
     # gespiegeld en geroteerd. Zie de documentatie op 
     # https://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html
 
-    pass
+    t = np.reshape(nrVector, (20, 20), order='F')
+    plt.imshow(t, cmap='gray')
+    plt.show()
 
 # ==== OPGAVE 2a ====
 def sigmoid(z):
@@ -19,7 +21,9 @@ def sigmoid(z):
     # vector is.
     # Maak gebruik van de methode exp() in NumPy.
 
-    pass
+    sig = 1 / (1 + np.exp(-z))
+
+    return sig
 
 
 # ==== OPGAVE 2b ====
