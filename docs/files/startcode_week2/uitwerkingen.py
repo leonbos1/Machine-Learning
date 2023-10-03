@@ -36,12 +36,17 @@ def get_y_matrix(y, m):
     # van de matrix 10 (0-9), maar de methode moet werken voor elke waarde van 
     # y en m
 
-    y_matrix = csr_matrix((m, 10))
+    x = len(y)
+    y_i = y[:, 0]
+    
+    cols = y_i - 1
+    rows = np.arange(m)
 
-    for i in range(m):
-        y_matrix[i, y[i]-1] = 1
+    y_vec = csr_matrix((np.ones(x), (rows, cols)))
 
-    return y_matrix
+    y_vec_array = y_vec.toarray()
+    
+    return y_vec_array
 
 # ==== OPGAVE 2c ==== 
 # ===== deel 1: =====
@@ -101,15 +106,15 @@ def compute_cost(Theta1, Theta2, X, y):
 
     m = X.shape[0]
 
-    y_matrix = get_y_matrix(y, X.shape[0])
+    y_matrix = get_y_matrix(y, m)
 
     h = predict_number(Theta1, Theta2, X)
 
     cost_matrix = -y_matrix * np.log(h) - (1 - y_matrix) * np.log(1 - h)
+
     cost = np.sum(cost_matrix) / m
 
     return cost
-
 
 
 # ==== OPGAVE 3a ====
@@ -118,22 +123,41 @@ def sigmoid_gradient(z):
     # Zie de opgave voor de exacte formule. Zorg ervoor dat deze werkt met
     # scalaire waarden en met vectoren.
 
-    pass
+    return sigmoid(z) * (1 - sigmoid(z))
+
 
 # ==== OPGAVE 3b ====
 def nn_check_gradients(Theta1, Theta2, X, y): 
     # Retourneer de gradiënten van Theta1 en Theta2, gegeven de waarden van X en van y
     # Zie het stappenplan in de opgaven voor een mogelijke uitwerking.
 
-    Delta2 = np.zeros(Theta1.shape)
-    Delta3 = np.zeros(Theta2.shape)
-    m = 1 #voorbeeldwaarde; dit moet je natuurlijk aanpassen naar de echte waarde van m
+    Delta1 = np.zeros(Theta1.shape)
+    Delta2 = np.zeros(Theta2.shape)
+    m = X.shape[0]
 
-    for i in range(m): 
-        #YOUR CODE HERE
-        pass
+    y_matrix = get_y_matrix(y, m)
 
-    Delta2_grad = Delta2 / m
-    Delta3_grad = Delta3 / m
-    
-    return Delta2_grad, Delta3_grad
+    for i in range(m):
+        # Stap 1 Forward propagation
+        a1 = np.hstack(([1], X[i]))
+        z2 = np.dot(a1, Theta1.T)
+        a2 = sigmoid(z2)
+        a2 = np.hstack(([1], a2))
+        z3 = np.dot(a2, Theta2.T)
+        a3 = sigmoid(z3)
+
+        # Stap 2 derde laag
+        delta3 = a3 - y_matrix[i]
+
+        # Stap 3 delta 2 berekenen
+        delta2 = np.dot(delta3, Theta2) * sigmoid_gradient(np.hstack(([1], z2)))
+        delta2 = delta2[1:]
+
+        # Stap 4 
+        Delta1 += np.outer(delta2, a1)
+        Delta2 += np.outer(delta3, a2)
+
+    delta1_grad = Delta1 / m
+    delta2_grad = Delta2 / m
+
+    return delta1_grad, delta2_grad
