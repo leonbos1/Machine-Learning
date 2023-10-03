@@ -73,20 +73,20 @@ def predict_number(Theta1, Theta2, X):
     # Voeg enen toe aan het begin van elke stap en reshape de uiteindelijke
     # vector zodat deze dezelfde dimensionaliteit heeft als y in de exercise.
 
-    #stap 1
     m = X.shape[0]
 
+    #Stap 1 Toevoegen van een bias aan de input
     a1 = np.hstack((np.ones((m, 1)), X))
 
-    #stap 2
+    #Stap 2 Gewichten vermenigvuldigen met de input en sigmoid toepassen
     z2 = np.dot(a1, Theta1.T)
     a2 = sigmoid(z2)
 
-    #stap 3
+    #Stap 3 Toevoegen van een bias aan de verborgen laag
     m = a2.shape[0]
     a2 = np.hstack((np.ones((m, 1)), a2))
 
-    #stap 4
+    #Stap 4 Gewichten vermenigvuldigen met de input en sigmoid toepassen
     z3 = np.dot(a2, Theta2.T)
     result = sigmoid(z3)
 
@@ -146,18 +146,26 @@ def nn_check_gradients(Theta1, Theta2, X, y):
         z3 = np.dot(a2, Theta2.T)
         a3 = sigmoid(z3)
 
-        # Stap 2 derde laag
+        # Stap 2 voor elke output node i in de derde laag zetten
         delta3 = a3 - y_matrix[i]
 
-        # Stap 3 delta 2 berekenen
+        # Stap 3 Uitrekenen hoeveel elke verborgen node heeft bijgedragen aan de kosten
         delta2 = np.dot(delta3, Theta2) * sigmoid_gradient(np.hstack(([1], z2)))
         delta2 = delta2[1:]
 
-        # Stap 4 
+        # Stap 4 Bijdrage optellen bij de totale bijdrage van elke node
         Delta1 += np.outer(delta2, a1)
         Delta2 += np.outer(delta3, a2)
 
+    # Stap 5 Gemiddelde nemen van de bijdrage van elke node
     delta1_grad = Delta1 / m
     delta2_grad = Delta2 / m
 
     return delta1_grad, delta2_grad
+
+    # === Resultaten ===
+    #iteraties | accuratessse
+    # 10       |   80.16%
+    # 30       |   93.64%
+    # 50       |   96.76%
+    # 100      |   99,44%
