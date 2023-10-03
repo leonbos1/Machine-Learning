@@ -36,8 +36,12 @@ def get_y_matrix(y, m):
     # van de matrix 10 (0-9), maar de methode moet werken voor elke waarde van 
     # y en m
 
-    #YOUR CODE HERE
-    pass
+    y_matrix = csr_matrix((m, 10))
+
+    for i in range(m):
+        y_matrix[i, y[i]-1] = 1
+
+    return y_matrix
 
 # ==== OPGAVE 2c ==== 
 # ===== deel 1: =====
@@ -64,8 +68,24 @@ def predict_number(Theta1, Theta2, X):
     # Voeg enen toe aan het begin van elke stap en reshape de uiteindelijke
     # vector zodat deze dezelfde dimensionaliteit heeft als y in de exercise.
 
-    pass
+    #stap 1
+    m = X.shape[0]
 
+    a1 = np.hstack((np.ones((m, 1)), X))
+
+    #stap 2
+    z2 = np.dot(a1, Theta1.T)
+    a2 = sigmoid(z2)
+
+    #stap 3
+    m = a2.shape[0]
+    a2 = np.hstack((np.ones((m, 1)), a2))
+
+    #stap 4
+    z3 = np.dot(a2, Theta2.T)
+    result = sigmoid(z3)
+
+    return result
 
 
 # ===== deel 2: =====
@@ -79,7 +99,16 @@ def compute_cost(Theta1, Theta2, X, y):
     # Maak gebruik van de methode get_y_matrix() die je in opgave 2a hebt gemaakt
     # om deze om te zetten naar een matrix. 
 
-    pass
+    m = X.shape[0]
+
+    y_matrix = get_y_matrix(y, X.shape[0])
+
+    h = predict_number(Theta1, Theta2, X)
+
+    cost_matrix = -y_matrix * np.log(h) - (1 - y_matrix) * np.log(1 - h)
+    cost = np.sum(cost_matrix) / m
+
+    return cost
 
 
 
