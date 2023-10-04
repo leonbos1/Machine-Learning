@@ -146,10 +146,10 @@ def nn_check_gradients(Theta1, Theta2, X, y):
         z3 = np.dot(a2, Theta2.T)
         a3 = sigmoid(z3)
 
-        # Stap 2 voor elke output node i in de derde laag zetten
+        # Stap 2: Bereken de fout (delta) voor elke output node
         delta3 = a3 - y_matrix[i]
 
-        # Stap 3 Uitrekenen hoeveel elke verborgen node heeft bijgedragen aan de kosten
+        # Stap 3 Bereken de fout (delta) voor elke node in verborgen laag
         delta2 = np.dot(delta3, Theta2) * sigmoid_gradient(np.hstack(([1], z2)))
         delta2 = delta2[1:]
 
