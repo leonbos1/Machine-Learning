@@ -62,9 +62,10 @@ def conf_matrix(labels, pred):
     # Retourneer de econfusion matrix op basis van de gegeven voorspelling (pred) en de actuele
     # waarden (labels). Check de documentatie van tf.math.confusion_matrix:
     # https://www.tensorflow.org/api_docs/python/tf/math/confusion_matrix
-    
-    # YOUR CODE HERE
-    pass
+
+    econfusion_matrix = tf.math.confusion_matrix(labels, pred)
+
+    return econfusion_matrix
     
 
 # OPGAVE 2b
@@ -79,9 +80,18 @@ def conf_els(conf, labels):
  
     # Check de documentatie van numpy diagonal om de eerste waarde te bepalen.
     # https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html
- 
-    # YOUR CODE HERE
-    pass
+
+    print("De dimensionaliteit van de matrix is: " + str(conf.shape))
+    print("Dit is gelijk aan het kwadraat van het aantal labels: " + str(len(labels) * len(labels)))
+
+    tp = np.diagonal(conf)             #tp: diagonaal van de matrix
+    fp = np.sum(conf, axis=0) - tp     #fp: som kolommen - tp
+    fn = np.sum(conf, axis=1) - tp     #fn: som rijen - tp
+    tn = np.sum(conf) - tp - fp - fn   #tn: som van de hele matrix - tp - fp - fn
+
+    rv = list(zip(labels, tp, fp, fn, tn)) #zip de lijsten tot een lijst van tuples
+
+    return rv
 
 # OPGAVE 2c
 def conf_data(metrics):
@@ -92,13 +102,16 @@ def conf_data(metrics):
 
     # VERVANG ONDERSTAANDE REGELS MET JE EIGEN CODE
     
-    tp = 1
-    fp = 1
-    fn = 1
-    tn = 1
+    tp_sum = sum(metric[1] for metric in metrics)  #tp_sum: som van alle tp's
+    fp_sum = sum(metric[2] for metric in metrics)  #fp_sum: som van alle fp's
+    fn_sum = sum(metric[3] for metric in metrics)  #fn_sum: som van alle fn's
+    tn_sum = sum(metric[4] for metric in metrics)  #tn_sum: som van alle tn's
 
-    # BEREKEN HIERONDER DE JUISTE METRIEKEN EN RETOURNEER DIE 
-    # ALS EEN DICTIONARY
+    # BEREKEN DE EVALUATIEMETRIEKEN
+    tpr = tp_sum / (tp_sum + fn_sum)
+    ppv = tp_sum / (tp_sum + fp_sum)
+    tnr = tn_sum / (tn_sum + fp_sum)
+    fpr = fp_sum / (tn_sum + fp_sum)
 
-    rv = {'tpr':0, 'ppv':0, 'tnr':0, 'fpr':0 }
-    return rv
+    # RETOURNEER DE METRIEKEN IN EEN DICTIONARY
+    return {'TPR': tpr, 'PPV': ppv, 'TNR': tnr, 'FPR': fpr}
