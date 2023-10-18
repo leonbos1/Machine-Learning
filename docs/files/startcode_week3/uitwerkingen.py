@@ -44,10 +44,12 @@ def build_model():
 
     print("De dimnsionaliteit van de input layer is: " + str(X_train.shape))     # 60000 images van 28x28 pixels
 
-    model = keras.Sequential([
+    model = keras.Sequential()
+    #https://keras.io/api/layers/activations/
+    model.add([
         keras.layers.Flatten(input_shape=(X_train.shape[1], X_train.shape[2])),  #reshapen naar een 1D array
         keras.layers.Dense(128, activation='relu'),                              #128 nodes in de hidden layer, relu als activatie functie
-        keras.layers.Dense(10, activation='softmax')                             # 10 mogelijkheden voor de output, softmax als activatie functie
+        keras.layers.Dense(10, activation='softmax')                             #10 mogelijkheden voor de output, softmax als activatie functie
     ])
 
     model.compile(optimizer='adam',                                              # optimizer past de gewichten aan om loss te minimaliseren
@@ -63,9 +65,8 @@ def conf_matrix(labels, pred):
     # waarden (labels). Check de documentatie van tf.math.confusion_matrix:
     # https://www.tensorflow.org/api_docs/python/tf/math/confusion_matrix
 
-    econfusion_matrix = tf.math.confusion_matrix(labels, pred)
+    return tf.math.confusion_matrix(labels, pred)
 
-    return econfusion_matrix
     
 
 # OPGAVE 2b
@@ -85,13 +86,11 @@ def conf_els(conf, labels):
     print("Dit is gelijk aan het kwadraat van het aantal labels: " + str(len(labels) * len(labels)))
 
     tp = np.diagonal(conf)             #tp: diagonaal van de matrix
-    fp = np.sum(conf, axis=0) - tp     #fp: som kolommen - tp
-    fn = np.sum(conf, axis=1) - tp     #fn: som rijen - tp
+    fp = np.sum(conf, axis=0) - tp     #fp: som kolommen - tp                           axis 0 = kolommen van de cm
+    fn = np.sum(conf, axis=1) - tp     #fn: som rijen - tp                              axis 1 = rijen van de cm
     tn = np.sum(conf) - tp - fp - fn   #tn: som van de hele matrix - tp - fp - fn
 
-    rv = list(zip(labels, tp, fp, fn, tn)) #zip de lijsten tot een lijst van tuples
-
-    return rv
+    return list(zip(labels, tp, fp, fn, tn)) #zip de lijsten tot een lijst van tuples
 
 # OPGAVE 2c
 def conf_data(metrics):
@@ -102,16 +101,17 @@ def conf_data(metrics):
 
     # VERVANG ONDERSTAANDE REGELS MET JE EIGEN CODE
     
-    tp_sum = sum(metric[1] for metric in metrics)  #tp_sum: som van alle tp's
-    fp_sum = sum(metric[2] for metric in metrics)  #fp_sum: som van alle fp's
-    fn_sum = sum(metric[3] for metric in metrics)  #fn_sum: som van alle fn's
-    tn_sum = sum(metric[4] for metric in metrics)  #tn_sum: som van alle tn's
+    tp_sum = sum(metric[1] for metric in metrics)
+    fp_sum = sum(metric[2] for metric in metrics)
+    fn_sum = sum(metric[3] for metric in metrics)
+    tn_sum = sum(metric[4] for metric in metrics)
 
     # BEREKEN DE EVALUATIEMETRIEKEN
-    tpr = tp_sum / (tp_sum + fn_sum)
-    ppv = tp_sum / (tp_sum + fp_sum)
-    tnr = tn_sum / (tn_sum + fp_sum)
-    fpr = fp_sum / (tn_sum + fp_sum)
+    true_positive_rate = tp_sum / (tp_sum + fn_sum)
+    positive_predictive_value = tp_sum / (tp_sum + fp_sum)
+
+    true_negative_rate = tn_sum / (tn_sum + fp_sum)
+    fpr = fp_sum / (tn_sum + fp_sum) #fpr staat v
 
     # RETOURNEER DE METRIEKEN IN EEN DICTIONARY
     return {'TPR': tpr, 'PPV': ppv, 'TNR': tnr, 'FPR': fpr}

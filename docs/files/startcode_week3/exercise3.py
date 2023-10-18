@@ -79,7 +79,7 @@ print ("")
 print ("Aanmaken van het model.")
 model = build_model()
 print ("Trainen van het model...") 
-model.fit(train_images, train_labels, epochs=0)
+model.fit(train_images, train_labels, epochs=6)
 print ("Training afgerond.")
 
 input ("Druk op enter om verder te gaan...")
