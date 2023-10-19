@@ -44,9 +44,9 @@ def build_model():
 
     print("De dimnsionaliteit van de input layer is: " + str(X_train.shape))     # 60000 images van 28x28 pixels
 
-    model = keras.Sequential()
+    
     #https://keras.io/api/layers/activations/
-    model.add([
+    model = keras.Sequential([
         keras.layers.Flatten(input_shape=(X_train.shape[1], X_train.shape[2])),  #reshapen naar een 1D array
         keras.layers.Dense(128, activation='relu'),                              #128 nodes in de hidden layer, relu als activatie functie
         keras.layers.Dense(10, activation='softmax')                             #10 mogelijkheden voor de output, softmax als activatie functie
@@ -107,11 +107,10 @@ def conf_data(metrics):
     tn_sum = sum(metric[4] for metric in metrics)
 
     # BEREKEN DE EVALUATIEMETRIEKEN
-    true_positive_rate = tp_sum / (tp_sum + fn_sum)
-    positive_predictive_value = tp_sum / (tp_sum + fp_sum)
-
-    true_negative_rate = tn_sum / (tn_sum + fp_sum)
-    fpr = fp_sum / (tn_sum + fp_sum) #fpr staat v
+    tpr = tp_sum / (tp_sum + fn_sum)
+    ppv = tp_sum / (tp_sum + fp_sum)
+    tnr = tn_sum / (tn_sum + fp_sum)
+    fpr = fp_sum / (tn_sum + fp_sum)
 
     # RETOURNEER DE METRIEKEN IN EEN DICTIONARY
     return {'TPR': tpr, 'PPV': ppv, 'TNR': tnr, 'FPR': fpr}
