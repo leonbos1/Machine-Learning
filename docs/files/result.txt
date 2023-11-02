@@ -1,0 +1,15 @@
+Iterations: 5
+Best score: 0.7702045523897201
+Best params: {'C': 100, 'degree': 0, 'kernel': 'rbf'}
+Training time: 52.8605592250824s
+
+Iterations: 10
+Best score: 0.7703475150913752
+Best params: {'C': 100, 'degree': 0, 'kernel': 'rbf'}
+Training time: 125.30570888519287s
+
+Iterations: 5
+Best score: 0.7773948662780775
+Best params: {'C': 100, 'degree': 0, 'kernel': 'rbf'}
+Training time: 188.62701606750488s
+
