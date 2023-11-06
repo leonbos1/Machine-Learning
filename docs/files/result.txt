@@ -13,3 +13,81 @@ Best score: 0.7773948662780775
 Best params: {'C': 100, 'degree': 0, 'kernel': 'rbf'}
 Training time: 188.62701606750488s
 
+Iterations: 5
+Best score: 0.7809892991430004
+Best params: {'C': 100, 'degree': 0, 'kernel': 'rbf'}
+Training time: 96.5251693725586s
+
+Iterations: 5
+Best score: 0.7824295962223751
+Best params: {'C': 100, 'degree': 0, 'kernel': 'rbf'}
+Training time: 112.84737873077393s
+
+Iterations: 5
+Best score: 0.8025619992862648
+Best params: {'max_depth': 10, 'max_features': 'log2', 'n_estimators': 1000}
+Training time: 31.203100204467773s
+
+Iterations: 5
+Best score: 0.7782568309119778
+Best params: {'C': 100, 'degree': 0, 'kernel': 'rbf'}
+Training time: 105.3418824672699s
+
+Iterations: 5
+Best score: 0.7945071347666655
+Best params: {'max_depth': 10, 'max_features': 'sqrt', 'n_estimators': 100}
+Training time: 27.456673860549927s
+
+Iterations: 5
+Best score: 0.7917744596558555
+Best params: {'n_estimators': 1000, 'max_features': 'log2', 'max_depth': 10}
+Training time: 23.751031160354614s
+
+GridSearch icm SVC
+Iterations: 5
+Best score: 0.779984897775525
+Best params: {'C': 100, 'degree': 0, 'kernel': 'rbf'}
+Training time: 126.51341390609741s
+
+GridSearch icm RandomForestClassifier
+Iterations: 15
+Best score: 0.7992484049551898
+Best params: {'max_depth': 10, 'max_features': 'log2', 'n_estimators': 100}
+Training time: 89.10612344741821s
+
+RandomizedSearchCV icm RandomForest
+Iterations: 5
+Best score: 0.7986788656781261
+Best params: {'n_estimators': 1000, 'max_features': 'log2', 'max_depth': 10}
+Training time: 17.992706060409546s
+
+RandomizedSearchCV icm SVC
+Iterations: 5
+Best score: 0.779984897775525
+Best params: {'kernel': 'rbf', 'degree': 0, 'C': 100}
+Training time: 21.30152678489685s
+
+GridSearch icm SVC
+Iterations: 15
+Best score: 0.7804110498746307
+Best params: {'C': 100, 'degree': 0, 'kernel': 'rbf'}
+Training time: 314.2259027957916s
+
+GridSearch icm RandomForestClassifier
+Iterations: 15
+Best score: 0.800975956406246
+Best params: {'max_depth': 10, 'max_features': 'auto', 'n_estimators': 100}
+Training time: 84.32449388504028s
+
+RandomizedSearchCV icm RandomForest
+Iterations: 15
+Best score: 0.7976682555050769
+Best params: {'n_estimators': 100, 'max_features': 'auto', 'max_depth': 10}
+Training time: 48.49923610687256s
+
+RandomizedSearchCV icm SVC
+Iterations: 15
+Best score: 0.6045424641890718
+Best params: {'kernel': 'poly', 'degree': 6, 'C': 100}
+Training time: 299.9586191177368s
+
